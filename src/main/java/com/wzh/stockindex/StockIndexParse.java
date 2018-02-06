@@ -11,6 +11,10 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class StockIndexParse {
 
 
@@ -21,7 +25,8 @@ public class StockIndexParse {
             System.err.println("Usage: stockindex <in> <out>");
             System.exit(2);
         }
-        Job job = new Job(conf, "stockindex");
+        Job job = Job.getInstance(conf, "stockindex");
+        job.setJarByClass(StockIndexParse.class);
         job.setMapperClass(StockIndexMapper.class);
         // 设置输出类型
         job.setOutputKeyClass(Text.class);

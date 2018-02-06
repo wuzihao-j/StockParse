@@ -6,7 +6,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class StockInfo implements WritableComparable<StockInfo> {
 
