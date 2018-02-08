@@ -8,9 +8,9 @@ import java.util.List;
 public class MyZookeeper {
     public static ZooKeeper zk;
 
-    public static void DoIndustry(String root, String nodeName, int port) throws Exception {
+    public static void DoIndustry(String ip, int port) throws Exception {
 
-        zk = new ZooKeeper("120.78.205.73:" + port, 60000, new Watcher() {
+        zk = new ZooKeeper(ip + ":" + port, 60000, new Watcher() {
             public void process(WatchedEvent watchedEvent) {
                 if(watchedEvent.getPath() != null && watchedEvent.getPath().equals("/stock/industry_parse")
                         && watchedEvent.getType() == Watcher.Event.EventType.NodeCreated){
@@ -18,7 +18,6 @@ public class MyZookeeper {
                 }
             }
         });
-        createNode(root, nodeName);
     }
 
     public static void createNode(String root, String nodeName) throws KeeperException, InterruptedException {
@@ -27,5 +26,6 @@ public class MyZookeeper {
         }
         zk.create("/" + root + "/" + nodeName, "".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         List<String> children = zk.getChildren("/" + root, false);
+
     }
 }

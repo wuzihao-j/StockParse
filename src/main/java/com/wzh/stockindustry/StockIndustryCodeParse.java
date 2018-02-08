@@ -38,7 +38,7 @@ public class StockIndustryCodeParse {
         FileInputFormat.addInputPath(job, new Path(inputPath));
         FileOutputFormat.setOutputPath(job, new Path(outputPath));
         if(job.waitForCompletion(true)){
-            MyZookeeper.DoIndustry("stock", "industry_parse", 9000);
+            MyZookeeper.DoIndustry("120.78.205.73", 2181);
             MyZookeeper.createNode("stock", "industry_code");
         }
         System.exit(job.waitForCompletion(true)?0:1);
