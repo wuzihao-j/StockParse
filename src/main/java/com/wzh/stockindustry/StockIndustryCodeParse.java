@@ -1,5 +1,6 @@
 package com.wzh.stockindustry;
 
+import com.wzh.common.Stock;
 import com.wzh.zookeeper.MyZookeeper;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -16,12 +17,11 @@ import java.net.URI;
 
 public class StockIndustryCodeParse {
 
-    private static final String inputPath = "/input/stock/stock_index/";
-    private static final String outputPath = "/user/hive/warehouse/stock.db/industry_code/";
-    private static final String HDFS_PATH = "hdfs://120.78.205.73:9000";
+    private static final String inputPath = Stock.INPUT_PATH + "stock_index";
+    private static final String outputPath = Stock.HIVE_PATH + "industry_code/";
 
     public static void main(String[] args) throws Exception {
-        FileSystem fileSystem = FileSystem.get(new URI(HDFS_PATH), new Configuration());
+        FileSystem fileSystem = FileSystem.get(new URI(Stock.HDFS_PATH), new Configuration());
         if(fileSystem.exists(new Path(outputPath))){
             fileSystem.delete(new Path(outputPath), true);
         }
@@ -38,7 +38,7 @@ public class StockIndustryCodeParse {
         FileInputFormat.addInputPath(job, new Path(inputPath));
         FileOutputFormat.setOutputPath(job, new Path(outputPath));
         if(job.waitForCompletion(true)){
-            MyZookeeper.DoIndustry("120.78.205.73", 2181);
+            MyZookeeper.getInstance(null);
             MyZookeeper.createNode("stock", "industry_code");
         }
         System.exit(job.waitForCompletion(true)?0:1);
